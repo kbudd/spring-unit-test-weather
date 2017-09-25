@@ -3,31 +3,30 @@ package com.teamtreehouse.web.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
-
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 public class WeatherControllerTest {
     private MockMvc mockMvc;
-    private WeatherController controller;
+    private WeatherController weatherController;
 
     @Before
-    public void setup() {
-        controller = new WeatherController();
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+    public void setUp() {
+        weatherController = new WeatherController();
+        mockMvc = new MockMvcBuilders().standaloneSetup(weatherController).build();
     }
 
     @Test
-    public void home_ShouldRenderDetailView() throws Exception {
+    public void home_shouldRenderDetailView() throws Exception {
         mockMvc.perform(get("/"))
-            .andExpect(view().name("weather/detail"));
+                .andExpect(view().name("weather/detail"));
     }
 
     @Test
-    public void search_ShouldRedirectWithPathParam() throws Exception {
-        mockMvc.perform(get("/search").param("q","33596"))
-            .andExpect(redirectedUrl("/search/33596"));
+    public void search_ShouldRedirectWithPathParameter() throws Exception {
+        mockMvc.perform(get("/search").param("q", "33596"))
+                .andExpect(redirectedUrl("/search/33596"));
     }
 }
