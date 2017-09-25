@@ -29,5 +29,4 @@ public class WeatherControllerTest {
         mockMvc.perform(get("/search").param("q", "33596"))
                 .andExpect(redirectedUrl("/search/33596"));
     }
-
 }
