@@ -27,7 +27,7 @@ public class WeatherControllerTest {
 
     @Test
     public void search_ShouldRedirectWithPathParam() throws Exception {
-        mockMvc.perform(get("/search").param("q","60657"))
-            .andExpect(redirectedUrl("/search/60657"));
+        mockMvc.perform(get("/search").param("q","33596"))
+            .andExpect(redirectedUrl("/search/33596"));
     }
 }
