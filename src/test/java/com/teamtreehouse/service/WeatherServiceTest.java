@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -23,6 +24,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.hasSize;
 
+/**
+ * Created by kylebudd on 10/4/17.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class WeatherServiceTest {
@@ -37,16 +41,15 @@ public class WeatherServiceTest {
 
     @Before
     public void setup() {
-        loc = new Location(41.9403795,-87.65318049999999);
-        weather = service.findByLocation(loc);
+        location = new Location(32.7781 , -79.9252);
+        weather = service.findByLocation(location);
     }
 
     @Test
     public void findByLocation_ShouldReturnSameCoords() throws Exception {
-        assertThat(weather.getLatitude(),closeTo(loc.getLatitude(),ERROR_GEO));
-        assertThat(weather.getLongitude(),closeTo(loc.getLongitude(),ERROR_GEO));
+        assertThat(weather.getLatitude(),closeTo(location.getLatitude(),ERROR_GEO));
+        assertThat(weather.getLongitude(),closeTo(location.getLongitude(),ERROR_GEO));
     }
-
     @Test
     public void findByLocation_ShouldReturn8DaysForecastData() throws Exception {
         assertThat(weather.getDaily().getData(),hasSize(8));
@@ -63,7 +66,7 @@ public class WeatherServiceTest {
     @PropertySource("api.properties")
     public static class TestConfig {
         @Autowired
-        private Environment env;
+        private Environment environment;
 
         @Bean
         public RestTemplate restTemplate() {
@@ -73,10 +76,9 @@ public class WeatherServiceTest {
         @Bean
         public WeatherService weatherService() {
             WeatherService service = new WeatherServiceImpl(
-                env.getProperty("weather.api.name"),
-                env.getProperty("weather.api.key"),
-                env.getProperty("weather.api.host")
-            );
+                    environment.getProperty("weather.api.name"),
+                    environment.getProperty("weather.api.key"),
+                    environment.getProperty("weather.api.host")
             return service;
         }
     }
