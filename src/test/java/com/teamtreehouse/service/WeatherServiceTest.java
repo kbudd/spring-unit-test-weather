@@ -30,19 +30,17 @@ import static org.hamcrest.Matchers.hasSize;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public class WeatherServiceTest {
-
     @Autowired
     private WeatherService service;
 
-    private Location location;
+    private Location loc;
     private Weather weather;
 
-    private static final  double ERROR_GEO = 0.0000001;
-
+    private static final double ERROR_GEO = 0.0000001;
     private static final double ERROR_TIME = 5000;
 
     @Before
-    public void setUp() {
+    public void setup() {
         location = new Location(32.7781 , -79.9252);
         weather = service.findByLocation(location);
     }
@@ -52,9 +50,8 @@ public class WeatherServiceTest {
         assertThat(weather.getLatitude(),closeTo(location.getLatitude(),ERROR_GEO));
         assertThat(weather.getLongitude(),closeTo(location.getLongitude(),ERROR_GEO));
     }
-
     @Test
-    public void findByLocation_ShouldReturn8DaysForecastDate() throws Exception {
+    public void findByLocation_ShouldReturn8DaysForecastData() throws Exception {
         assertThat(weather.getDaily().getData(),hasSize(8));
     }
 
@@ -82,7 +79,6 @@ public class WeatherServiceTest {
                     environment.getProperty("weather.api.name"),
                     environment.getProperty("weather.api.key"),
                     environment.getProperty("weather.api.host")
-            );
             return service;
         }
     }
